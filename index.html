@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+  <script src="./script.js" defer></script>
+  <title>Kalkulator Relasi dan Fungsi</title>
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100 antialiased">
+  <main class="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:py-14">
+    <header class="mb-10">
+      <p class="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-cyan-400">Matematika diskrit</p>
+      <h1 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Kalkulator Relasi &amp; Fungsi</h1>
+      <p class="mt-3 max-w-2xl text-slate-400">Periksa sifat pemetaan, cari invers fungsi linear, dan hitung fungsi rekursif. Hasil dan pesan validasi akan tampil di setiap fitur.</p>
+    </header>
+
+    <section class="mb-6 rounded-2xl border border-slate-800 bg-slate-900/80 p-5 shadow-xl shadow-black/20 sm:p-7" aria-labelledby="relasi-title">
+      <div class="mb-6">
+        <p class="text-sm font-semibold text-cyan-400">01 / Relasi</p>
+        <h2 id="relasi-title" class="mt-1 text-xl font-semibold text-white">Periksa sifat pemetaan</h2>
+        <p class="mt-2 text-sm text-slate-400">Masukkan anggota himpunan berupa angka, dipisahkan koma. Tulis pasangan relasi dalam format array, misalnya <code class="rounded bg-slate-800 px-1.5 py-0.5 text-cyan-200">[1,4],[2,5]</code>.</p>
+      </div>
+
+      <div class="grid gap-4 sm:grid-cols-2">
+        <label class="block text-sm font-medium text-slate-300" for="domain-input">
+          Himpunan asal (domain)
+          <input id="domain-input" type="text" placeholder="Contoh: 1, 2, 3" autocomplete="off" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20">
+        </label>
+        <label class="block text-sm font-medium text-slate-300" for="codomain-input">
+          Himpunan kawan (kodomain)
+          <input id="codomain-input" type="text" placeholder="Contoh: 4, 5, 6" autocomplete="off" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20">
+        </label>
+        <label class="block text-sm font-medium text-slate-300 sm:col-span-2" for="relation-input">
+          Pasangan relasi
+          <input id="relation-input" type="text" placeholder="Contoh: [1,4],[2,5]" autocomplete="off" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20">
+        </label>
+      </div>
+
+      <div class="mt-6 grid gap-3 sm:grid-cols-2">
+        <article class="rounded-xl border border-slate-800 bg-slate-950/70 p-4">
+          <h3 class="font-semibold text-white">Cek fungsi</h3>
+          <p class="mt-1 text-sm text-slate-400">Pastikan setiap anggota domain memiliki tepat satu pasangan.</p>
+          <button type="button" data-mapping-check="function" class="mt-4 rounded-lg bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-2 focus:ring-offset-slate-950">Cek fungsi</button>
+          <p id="function-result" class="mt-3 min-h-6 text-sm" role="status" aria-live="polite">Belum diperiksa.</p>
+        </article>
+        <article class="rounded-xl border border-slate-800 bg-slate-950/70 p-4">
+          <h3 class="font-semibold text-white">Cek injektif</h3>
+          <p class="mt-1 text-sm text-slate-400">Pastikan anggota domain yang berbeda memiliki hasil berbeda.</p>
+          <button type="button" data-mapping-check="injective" class="mt-4 rounded-lg bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-2 focus:ring-offset-slate-950">Cek injektif</button>
+          <p id="injective-result" class="mt-3 min-h-6 text-sm" role="status" aria-live="polite">Belum diperiksa.</p>
+        </article>
+        <article class="rounded-xl border border-slate-800 bg-slate-950/70 p-4">
+          <h3 class="font-semibold text-white">Cek surjektif</h3>
+          <p class="mt-1 text-sm text-slate-400">Pastikan setiap anggota kodomain memiliki pasangan dari domain.</p>
+          <button type="button" data-mapping-check="surjective" class="mt-4 rounded-lg bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-2 focus:ring-offset-slate-950">Cek surjektif</button>
+          <p id="surjective-result" class="mt-3 min-h-6 text-sm" role="status" aria-live="polite">Belum diperiksa.</p>
+        </article>
+        <article class="rounded-xl border border-slate-800 bg-slate-950/70 p-4">
+          <h3 class="font-semibold text-white">Cek bijektif</h3>
+          <p class="mt-1 text-sm text-slate-400">Pemetaan bijektif harus sekaligus injektif dan surjektif.</p>
+          <button type="button" data-mapping-check="bijective" class="mt-4 rounded-lg bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-2 focus:ring-offset-slate-950">Cek bijektif</button>
+          <p id="bijective-result" class="mt-3 min-h-6 text-sm" role="status" aria-live="polite">Belum diperiksa.</p>
+        </article>
+      </div>
+    </section>
+
+    <div class="grid gap-6 md:grid-cols-2">
+      <section class="rounded-2xl border border-slate-800 bg-slate-900/80 p-5 shadow-xl shadow-black/20 sm:p-7" aria-labelledby="inverse-title">
+        <p class="text-sm font-semibold text-violet-400">02 / Fungsi linear</p>
+        <h2 id="inverse-title" class="mt-1 text-xl font-semibold text-white">Cari fungsi invers</h2>
+        <p class="mt-2 text-sm text-slate-400">Gunakan variabel <code class="rounded bg-slate-800 px-1.5 py-0.5 text-violet-200">x</code> dan masukkan fungsi linear, misalnya <code class="rounded bg-slate-800 px-1.5 py-0.5 text-violet-200">2x + 4</code> atau hasil invers seperti <code class="rounded bg-slate-800 px-1.5 py-0.5 text-violet-200">(x - 4) / 2</code>.</p>
+        <label class="mt-5 block text-sm font-medium text-slate-300" for="linear-input">
+          f(x)
+          <input id="linear-input" type="text" placeholder="Contoh: 2x + 4" autocomplete="off" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-violet-400 focus:ring-2 focus:ring-violet-400/20">
+        </label>
+        <button id="inverse-button" type="button" class="mt-4 rounded-lg bg-violet-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-violet-400 focus:outline-none focus:ring-2 focus:ring-violet-300 focus:ring-offset-2 focus:ring-offset-slate-950">Hitung invers</button>
+        <p id="inverse-result" class="mt-4 min-h-6 text-sm" role="status" aria-live="polite">Hasil invers akan tampil di sini.</p>
+      </section>
+
+      <section class="rounded-2xl border border-slate-800 bg-slate-900/80 p-5 shadow-xl shadow-black/20 sm:p-7" aria-labelledby="recursion-title">
+        <p class="text-sm font-semibold text-amber-400">03 / Rekursi</p>
+        <h2 id="recursion-title" class="mt-1 text-xl font-semibold text-white">Hitung fungsi rekursif</h2>
+        <p class="mt-2 text-sm text-slate-400">Rumus dapat menggunakan <code class="rounded bg-slate-800 px-1.5 py-0.5 text-amber-200">n</code> dan pemanggilan <code class="rounded bg-slate-800 px-1.5 py-0.5 text-amber-200">f(...)</code>. Kondisi berhenti harus menghasilkan benar atau salah.</p>
+        <div class="mt-5 grid gap-4 sm:grid-cols-2">
+          <label class="block text-sm font-medium text-slate-300" for="recursion-n">
+            Nilai n
+            <input id="recursion-n" type="number" min="0" max="500" step="1" placeholder="Contoh: 5" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20">
+          </label>
+          <label class="block text-sm font-medium text-slate-300" for="base-case">
+            Nilai dasar
+            <input id="base-case" type="number" step="any" placeholder="Contoh: 1" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20">
+          </label>
+          <label class="block text-sm font-medium text-slate-300 sm:col-span-2" for="recursion-rule">
+            Aturan rumus
+            <input id="recursion-rule" type="text" placeholder="Contoh: f(n - 1) * n" autocomplete="off" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20">
+          </label>
+          <label class="block text-sm font-medium text-slate-300 sm:col-span-2" for="stop-rule">
+            Kondisi berhenti
+            <input id="stop-rule" type="text" placeholder="Contoh: n <= 1" autocomplete="off" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20">
+          </label>
+        </div>
+        <button id="recursion-button" type="button" class="mt-4 rounded-lg bg-amber-400 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-200 focus:ring-offset-2 focus:ring-offset-slate-950">Hitung rekursi</button>
+        <p id="recursion-result" class="mt-4 min-h-6 text-sm" role="status" aria-live="polite">Hasil rekursi akan tampil di sini.</p>
+      </section>
+    </div>
+
+    <footer class="mt-10 border-t border-slate-800 pt-5 text-sm text-slate-500">
+      Kalkulator edukasi relasi dan fungsi.
+    </footer>
+  </main>
+</body>
+</html>
